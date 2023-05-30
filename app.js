@@ -40,9 +40,13 @@ app.get('/blogs', (req, res)=> {
         .then((result) => {
             res.render('blogs/index', { title: 'Blogs', blogs: result });
         })
+        .catch(err => console.log(err))
+})
+
+app.get('/blogs/create', (req, res) => {
+    res.render('blogs/create', { title: 'Create blog' })
 })
 
 app.use((req, res) => {
-    res.status(404)
-       .render('404', { title: '404' })
+    res.status(404).render('404', { title: '404' })
 })
