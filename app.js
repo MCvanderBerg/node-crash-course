@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const express = require('express');
-const Blog = require('./models/blog')
+const blogRouter = require('./routes/blogRoutes');
+
 
 const app = express();
 mongoose.connect('mongodb+srv://ChristiaanVanDerBerg:Noeline101@mycluster.nhdujgl.mongodb.net/')
@@ -35,43 +36,7 @@ app.get('/about', (req, res) => {
     res.render('about', { title: 'About' });
 })
 
-app.get('/blogs', (req, res)=> {
-    Blog.find()
-        .then((result) => {
-            res.render('blogs/index', { title: 'Blogs', blogs: result });
-        })
-        .catch(err => console.log(err))
-})
-app.post('/blogs', (req, res) => {
-    new Blog(req.body)
-        .save()
-        .then(() => {
-            res.redirect('/blogs')
-        })
-        .catch(err => console.log(err))
-})
-app.get('/blogs/create', (req, res) => {
-    res.render('blogs/create', { title: 'Create blog' })
-})
-app.delete('blogs/:id', (req, res) => {
-    console.log('deleting...')
-    Blog.findByIdAndDelete(req.params.id)
-        .then(result => {
-            console.log('successfully deleted')
-            res.json({ redirect: '/blogs' })    
-        })
-        .catch(err => console.log(err))
-})
-app.get('/blogs/:id', (req, res) => {
-    console.log('getting...')
-    Blog.findById(req.params.id)
-        .then(result => {
-            res.render('blogs/details', { title: result.title, blog: result })
-        })
-        .catch(err => console.log(err))
-})
-
-
+app.use('/blogs', blogRouter)
 
 app.use((req, res) => {
     res.status(404).render('404', { title: '404' })
