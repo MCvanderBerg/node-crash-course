@@ -42,10 +42,25 @@ app.get('/blogs', (req, res)=> {
         })
         .catch(err => console.log(err))
 })
-
+app.post('/blogs', (req, res) => {
+    new Blog(req.body)
+        .save()
+        .then(() => {
+            res.redirect('/blogs')
+        })
+        .catch(err => console.log(err))
+})
 app.get('/blogs/create', (req, res) => {
     res.render('blogs/create', { title: 'Create blog' })
 })
+app.get('/blogs/:id', (req, res) => {
+    Blog.findById(req.params.id)
+        .then(result => {
+            res.render('blogs/details', { title: result.title, blog: result })
+        })
+        .catch(err => console.log(err))
+})
+
 
 app.use((req, res) => {
     res.status(404).render('404', { title: '404' })
