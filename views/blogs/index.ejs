@@ -1,0 +1,18 @@
+<html lang="en">
+    <%- include("../partials/head.ejs")%>
+    <body>
+        <%- include("../partials/nav.ejs")%>
+            <% if (blogs.length > 0){ %>
+                <% blogs.foreach(blog => {%>
+                    <div>
+                        <h2><%= blog.title %></h2>
+                        <h3><%= blog.snippet %></h3>
+                        <p><%= blog.body %></p>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>There isn't any blogs at the moment</p>
+            <% } %>
+        <%- include("../partials/foot.ejs")%>
+    </body>
+</html>
