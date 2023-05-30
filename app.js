@@ -15,8 +15,24 @@ mongoose.connect('mongodb+srv://ChristiaanVanDerBerg:Noeline101@mycluster.nhdujg
 
 app.set('view engine', 'ejs');
 
+// middleware & static files
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'));
+
+
 app.get('/', (req, res) =>{
     res.redirect('/blogs')
+       .then((result) => {
+            console.log('blogs should be showing')
+       })
+       .catch((err) => {
+            console.log(err)
+       })
+})
+
+app.get('/about', (req, res) => {
+    res.render('about', { title: 'About' });
 })
 
 app.get('/blogs', (req, res)=> {
